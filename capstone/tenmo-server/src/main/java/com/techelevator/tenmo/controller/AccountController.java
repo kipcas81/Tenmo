@@ -25,4 +25,9 @@ public class AccountController {
         return accountDao.getAccountBalance(accountId);
     }
 
+    @RequestMapping(path = "/accounts/user/{userId}", method = RequestMethod.GET)
+    public Account getAccountByUserId(@PathVariable int userId) {
+        return accountDao.getAccountByUserId(userId);
+    }
+
 }
