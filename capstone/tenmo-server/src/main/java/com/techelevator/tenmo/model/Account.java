@@ -44,7 +44,6 @@ public class Account {
         this.balance = balance;
     }
 
-    // Additional methods as needed
 
     @Override
     public String toString() {
