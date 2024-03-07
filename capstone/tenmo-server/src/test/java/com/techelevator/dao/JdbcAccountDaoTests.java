@@ -32,4 +32,19 @@ public class JdbcAccountDaoTests  extends BaseDaoTests {
         Assert.assertEquals(ACCOUNT_1, actualAccount);
     }
 
+    @Test
+    public void getAccountById_given_invalid_Id_returns_null() {
+        Assert.assertNull(sut.getAccountById(10000));
+    }
+    @Test
+    public void getAccountBalance_given_valid_Id_returns_balance() {
+        BigDecimal actualBalance = sut.getAccountBalance(ACCOUNT_1.getAccountId());
+
+        Assert.assertEquals(ACCOUNT_1.getBalance(), actualBalance);
+    }
+    @Test
+    public void getAccountBalance_given_invalid_Id_returns_null() {
+        Assert.assertNull(sut.getAccountBalance(10000));
+    }
+
 }
