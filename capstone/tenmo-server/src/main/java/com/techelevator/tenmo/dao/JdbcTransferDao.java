@@ -72,6 +72,24 @@ public class JdbcTransferDao implements TransferDao {
         }
         return newTransfer;
     }
+    @Override
+    public Transfer sendTransfer(int transferTypeId, int transferStatusId, int accountFrom, int accountTo, BigDecimal amount) {
+        Transfer sentTransfer = null;
+        String sql = "INSERT INTO transfer(transfer_type_id, transfer_status_id, account_from, account_to, amount)" +
+                "VALUES(" +
+                "(SELECT transfer_type_id FROM transfer_type WHERE transfer_type_id = ?)," +
+                "(SELECT transfer_status_id FROM transfer_status WHERE transfer_status_id = ?)," +
+                "account_from = ?, account_to = ?, amount = ?);";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferTypeId, transferStatusId, accountFrom, accountTo, amount);
+            if (results.next()) {
+                sentTransfer = mapRowToTransfer(results);
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        }
+        return sentTransfer;
+    }
 
     @Override
     public Transfer updateTransfer(Transfer transfer) {
