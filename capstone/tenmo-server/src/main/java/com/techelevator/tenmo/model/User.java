@@ -15,6 +15,7 @@ public class User {
    @JsonIgnore
    private boolean activated;
    private Set<Authority> authorities = new HashSet<>();
+   private double balance;
 
    public User() { }
 
@@ -99,4 +100,6 @@ public class User {
               ", authorities=" + authorities +
               '}';
    }
+
+
 }
