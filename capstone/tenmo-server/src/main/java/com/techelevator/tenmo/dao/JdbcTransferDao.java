@@ -3,16 +3,22 @@ package com.techelevator.tenmo.dao;
 import com.techelevator.tenmo.exception.DaoException;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JdbcTransferDao implements TransferDao{
+public class JdbcTransferDao implements TransferDao {
     private final JdbcTemplate jdbcTemplate;
+    private static List<Transfer> reservations = new ArrayList<>();
+
     public JdbcTransferDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -23,31 +29,31 @@ public class JdbcTransferDao implements TransferDao{
         String sql = "SELECT * FROM transfer;";
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-            while(results.next()) {
+            while (results.next()) {
                 Transfer transfer = mapRowToTransfer(results);
                 transfers.add(transfer);
             }
-        }
-        catch (CannotGetJdbcConnectionException e) {
+        } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         }
         return transfers;
     }
+
     @Override
     public Transfer getTransferById(int id) {
         Transfer transfer = null;
         String sql = "SELECT * FROM transfer WHERE transfer_id = ?;";
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
-            if(results.next()) {
+            if (results.next()) {
                 transfer = mapRowToTransfer(results);
             }
-        }
-        catch (CannotGetJdbcConnectionException e) {
+        } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         }
         return transfer;
     }
+
     @Override
     public Transfer requestTransfer(int transferTypeId, int transferStatusId, int accountFrom, int accountTo, BigDecimal amount) {
         Transfer newTransfer = null;
@@ -58,14 +64,32 @@ public class JdbcTransferDao implements TransferDao{
                 "account_from = ?, account_to = ?, amount = ?);";
         try {
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transferTypeId, transferStatusId, accountFrom, accountTo, amount);
-            if(results.next()) {
+            if (results.next()) {
                 newTransfer = mapRowToTransfer(results);
             }
-        }
-        catch (CannotGetJdbcConnectionException e) {
+        } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
         }
         return newTransfer;
+    }
+
+    @Override
+    public Transfer updateTransfer(Transfer transfer) {
+        Transfer result = transfer;
+        boolean finished = false;
+
+        for (int i = 0; i < reservations.size(); i++) {
+            if (reservations.get(i).getId() == transfer.getId()) {
+                reservations.set(i, result);
+                finished = true;
+                break;
+            }
+        }
+        if (!finished) {
+            throw new DaoException("Reservation to update not found");
+        }
+
+        return result;
     }
 
     private Transfer mapRowToTransfer(SqlRowSet rs) {
