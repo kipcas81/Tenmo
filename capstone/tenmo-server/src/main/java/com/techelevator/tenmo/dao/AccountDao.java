@@ -9,5 +9,7 @@ public interface AccountDao {
 
     BigDecimal getAccountBalance(int accountId);
 
+    Account getAccountByUserId(int userId);
+
     Account setAccountBalance(Account account);
 }
