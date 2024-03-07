@@ -35,6 +35,16 @@ public class JdbcTransferDao implements TransferDao{
     @Override
     public Transfer getTransferById(int id) {
         Transfer transfer = null;
+        String sql = "SELECT * FROM transfer WHERE transfer_id = ?;";
+        try {
+            SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+            if(results.next()) {
+                transfer = mapRowToTransfer(results);
+            }
+        }
+        catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        }
         return transfer;
     }
 
