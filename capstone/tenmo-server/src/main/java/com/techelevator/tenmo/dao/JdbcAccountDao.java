@@ -2,6 +2,8 @@ package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.exception.DaoException;
 import com.techelevator.tenmo.model.Account;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -36,16 +38,40 @@ public class JdbcAccountDao implements AccountDao {
 
     @Override
     public BigDecimal getAccountBalance(int accountId) {
-        BigDecimal balance = null;
+        BigDecimal balance;
         String sql = "SELECT balance FROM account WHERE account_id = ?";
+
         try {
             balance = jdbcTemplate.queryForObject(sql, BigDecimal.class, accountId);
         } catch (CannotGetJdbcConnectionException e) {
             throw new DaoException("Unable to connect to server or database", e);
+        } catch (EmptyResultDataAccessException e) {
+            balance = null;
         }
         return balance;
     }
 
+    @Override
+    public Account setAccountBalance(Account account) {
+        Account updatedAccount;
+        String sql = "UPDATE account SET balance = ? WHERE account_id = ?";
+
+        try {
+            int rowsAffected = jdbcTemplate.update(sql, account.getBalance(), account.getAccountId());
+
+            if (rowsAffected == 0) {
+                updatedAccount = null;
+//                throw new DaoException("Zero rows affected, expected at least one");
+            } else {
+                updatedAccount = getAccountById(account.getAccountId());
+            }
+        } catch (CannotGetJdbcConnectionException e) {
+            throw new DaoException("Unable to connect to server or database", e);
+        } catch (DataIntegrityViolationException e) {
+            throw new DaoException("Data integrity violation", e);
+        }
+        return updatedAccount;
+    }
 
     private Account mapRowToAccount(SqlRowSet rs) {
         Account account = new Account();

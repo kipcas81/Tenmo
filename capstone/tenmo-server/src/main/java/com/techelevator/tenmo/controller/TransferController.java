@@ -1,13 +1,15 @@
 package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.TransferDao;
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 
+@RestController
 public class TransferController {
     private TransferDao transferDao;
 
@@ -20,7 +22,7 @@ public class TransferController {
         return transferDao.getTransfers();
     }
     @RequestMapping(path = "/transfer/{id}", method = RequestMethod.GET)
-    public Transfer getTransfersById(int id) {
+    public Transfer getTransferById(@PathVariable int id) {
         return transferDao.getTransferById(id);
     }
     @RequestMapping(path = "/transfer", method = RequestMethod.POST)
@@ -28,11 +30,11 @@ public class TransferController {
         return transferDao.requestTransfer(transferTypeId, transferStatusId, accountFrom, accountTo, amount);
     }
     @RequestMapping(path = "/transfer/{id}", method = RequestMethod.PUT)
-    public Transfer updateTransfer(Transfer transfer) {
+    public Transfer updateTransfer(@Valid @RequestBody Transfer transfer, @PathVariable int id) {
         return transferDao.updateTransfer(transfer);
     }
-    @RequestMapping(path = "/transfer/{id}", method = RequestMethod.PUT)
-    public Transfer sendTransfer(int transferTypeId, int transferStatusId, int accountFrom, int accountTo, BigDecimal amount) {
-        return transferDao.sendTransfer(transferTypeId, transferStatusId, accountFrom, accountTo, amount);
-    }
+//    @RequestMapping(path = "/transfer/{id}", method = RequestMethod.PUT)
+//    public Transfer sendTransfer(int transferTypeId, int transferStatusId, int accountFrom, int accountTo, BigDecimal amount) {
+//        return transferDao.sendTransfer(transferTypeId, transferStatusId, accountFrom, accountTo, amount);
+//    }
 }

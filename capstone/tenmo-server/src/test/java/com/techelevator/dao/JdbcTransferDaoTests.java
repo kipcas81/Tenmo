@@ -1,7 +1,6 @@
 package com.techelevator.dao;
 
 import com.techelevator.tenmo.dao.JdbcTransferDao;
-import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,10 +17,14 @@ public class JdbcTransferDaoTests  extends BaseDaoTests {
     private static final BigDecimal TRANSFER_AMOUNT4 = new BigDecimal("400.00");
     private static final BigDecimal TRANSFER_AMOUNT5 = new BigDecimal("500.00");
     private static final BigDecimal TRANSFER_AMOUNT6 = new BigDecimal("600.00");
+    private static final BigDecimal TRANSFER_AMOUNT7 = new BigDecimal("700.00");
+    private static final BigDecimal TRANSFER_AMOUNT8 = new BigDecimal("800.00");
     //    STARTING_BALANCE.setScale(2);
 
     private static final Transfer TRANSFER_1 = new Transfer(3001,1,1,2001, 2002, TRANSFER_AMOUNT1);
+    private static final Transfer TRANSFER_1_1 = new Transfer(3001,1,1,2001, 2002, TRANSFER_AMOUNT7);
     private static final Transfer TRANSFER_2 = new Transfer(3001,1,2,2002, 2003, TRANSFER_AMOUNT2);
+    private static final Transfer TRANSFER_2_1 = new Transfer(4001,2,1,2001, 2002, TRANSFER_AMOUNT8);
     private static final Transfer TRANSFER_3 = new Transfer(3003,1,3,2001, 2003, TRANSFER_AMOUNT3);
     private static final Transfer TRANSFER_4 = new Transfer(3004,2,1,2003, 2001, TRANSFER_AMOUNT4);
     private static final Transfer TRANSFER_5 = new Transfer(3005,2,2,2002, 2001, TRANSFER_AMOUNT5);
@@ -44,6 +47,18 @@ public class JdbcTransferDaoTests  extends BaseDaoTests {
     @Test
     public void getTransferById_given_invalid_Id_returns_null() {
         Assert.assertNull(sut.getTransferById(10000));
+    }
+    @Test
+    public void updateTransfer_given_valid_Id_returns_transfer() {
+        Transfer updatedTransfer = sut.updateTransfer(TRANSFER_1_1);
+
+        Assert.assertEquals(TRANSFER_1_1, updatedTransfer);
+    }
+    @Test
+    public void updateTransfer_given_invalid_Id_returns_null() {
+        Transfer updatedTransfer = sut.updateTransfer(TRANSFER_2_1);
+
+        Assert.assertNull(updatedTransfer);
     }
 
 }
