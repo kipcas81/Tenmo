@@ -9,4 +9,5 @@ public interface TransferDao {
     List<Transfer> getTransfers();
     Transfer getTransferById(int id);
     Transfer requestTransfer(int transferTypeId, int transferStatusId, int accountFrom, int accountTo, BigDecimal amount);
+    Transfer updateTransfer(Transfer transfer);
 }
