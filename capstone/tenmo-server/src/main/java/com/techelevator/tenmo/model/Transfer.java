@@ -1,6 +1,6 @@
 package com.techelevator.tenmo.model;
 
-public class Transfers {
+public class Transfer {
     private int id;
     private int transferTypeId;
     private int transferStatusId;
@@ -45,5 +45,4 @@ public class Transfers {
     public void setAmount(double amount) {
         this.amount = amount;
     }
-
 }
