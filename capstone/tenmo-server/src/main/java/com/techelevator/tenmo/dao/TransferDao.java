@@ -8,5 +8,5 @@ import java.util.List;
 public interface TransferDao {
     List<Transfer> getTransfers();
     Transfer getTransferById(int id);
-    Transfer requestTransfer(BigDecimal amount);
+    Transfer requestTransfer(int transferTypeId, int transferStatusId, int accountFrom, int accountTo, BigDecimal amount);
 }

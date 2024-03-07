@@ -5,35 +5,34 @@ import java.util.Objects;
 
 public class Account {
 
-    private Integer accountId;
-    private Integer userId;
+    private int accountId;
+    private int userId;
     private BigDecimal balance;
 
     public Account() {
+
     }
 
-    public Account(Integer accountId, Integer userId, BigDecimal balance) {
+    public Account(int accountId, int userId, BigDecimal balance) {
         this.accountId = accountId;
         this.userId = userId;
         this.balance = balance;
-        this.balance.setScale(2);
     }
 
 
-
-    public Integer getAccountId() {
+    public int getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(Integer accountId) {
+    public void setAccountId(int accountId) {
         this.accountId = accountId;
     }
 
-    public Integer getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -43,7 +42,6 @@ public class Account {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
-        this.balance.setScale(2);
     }
 
 
@@ -65,5 +63,4 @@ public class Account {
                 userId == account.userId &&
                 Objects.equals(balance, account.balance);
     }
-
 }
