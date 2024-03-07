@@ -31,4 +31,8 @@ public class TransferController {
     public Transfer updateTransfer(Transfer transfer) {
         return transferDao.updateTransfer(transfer);
     }
+    @RequestMapping(path = "/transfer/{id}", method = RequestMethod.PUT)
+    public Transfer sendTransfer(int transferTypeId, int transferStatusId, int accountFrom, int accountTo, BigDecimal amount) {
+        return transferDao.sendTransfer(transferTypeId, transferStatusId, accountFrom, accountTo, amount);
+    }
 }
