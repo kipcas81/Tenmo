@@ -4,6 +4,8 @@ import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.dao.AccountDao;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+
 @RestController
 public class AccountController {
 
@@ -17,4 +19,10 @@ public class AccountController {
     public Account getAccountById(@PathVariable int accountId) {
         return accountDao.getAccountById(accountId);
     }
+
+    @RequestMapping(path = "/account/{accountId}/balance", method = RequestMethod.GET)
+    public BigDecimal getAccountBalance(@PathVariable int accountId) {
+        return accountDao.getAccountBalance(accountId);
+    }
+
 }
