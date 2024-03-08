@@ -37,7 +37,6 @@ public class JdbcTransferDaoTests  extends BaseDaoTests {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         sut = new JdbcTransferDao(jdbcTemplate);
     }
-
     @Test
     public void getTransferById_given_valid_Id_returns_transfer() {
         Transfer actualTransfer = sut.getTransferById(TRANSFER_1.getId());
@@ -60,5 +59,4 @@ public class JdbcTransferDaoTests  extends BaseDaoTests {
 
         Assert.assertNull(updatedTransfer);
     }
-
 }

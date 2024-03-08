@@ -34,7 +34,6 @@ public class JdbcAccountDaoTests  extends BaseDaoTests {
 
         Assert.assertEquals(ACCOUNT_1, actualAccount);
     }
-
     @Test
     public void getAccountById_given_invalid_Id_returns_null() {
         Assert.assertNull(sut.getAccountById(10000));
@@ -61,5 +60,4 @@ public class JdbcAccountDaoTests  extends BaseDaoTests {
 
         Assert.assertNull(updatedAccount);
     }
-
 }
