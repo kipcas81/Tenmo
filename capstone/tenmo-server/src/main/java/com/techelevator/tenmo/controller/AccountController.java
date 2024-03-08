@@ -19,11 +19,11 @@ public class AccountController {
     public Account getAccountById(@PathVariable int accountId) {
         return accountDao.getAccountById(accountId);
     }
-    @RequestMapping(path = "/account/{accountId}/balance", method = RequestMethod.GET)
-    public BigDecimal getAccountBalance(@PathVariable int accountId) {
-        return accountDao.getAccountBalance(accountId);
-    }
-    @RequestMapping(path = "/accounts/user/{userId}", method = RequestMethod.GET)
+//    @RequestMapping(path = "/account/{accountId}/balance", method = RequestMethod.GET)
+//    public BigDecimal getAccountBalance(@PathVariable int accountId) {
+//        return accountDao.getAccountBalance(accountId);
+//    }
+    @RequestMapping(path = "/account/user/{userId}", method = RequestMethod.GET)
     public Account getAccountByUserId(@PathVariable int userId) {
         return accountDao.getAccountByUserId(userId);
     }
