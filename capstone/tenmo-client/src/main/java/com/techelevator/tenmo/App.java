@@ -112,6 +112,12 @@ public class App {
             for (Transfer element : transfers) {
                 System.out.println(element);
             }
+                int id = consoleService.promptForMenuSelection("Please enter transfer ID to view details (0 to cancel): ");
+                if(id == 0) {
+                    consoleService.printMainMenu();
+                } else if (id == Transfer.getId()) {
+                    System.out.println(TransferService.getTransferById(id, token));
+                }
         }
     }
 
