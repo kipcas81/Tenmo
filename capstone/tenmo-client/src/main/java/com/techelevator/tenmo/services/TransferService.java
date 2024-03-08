@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.services;
 
+import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.*;
@@ -16,20 +17,34 @@ public class TransferService {
 
     private static final RestTemplate restTemplate = new RestTemplate();
 
-    public static List<Transfer> getTransfers() {
-        List<Transfer> transfers = new ArrayList<>();
+    private String authToken = null;
+
+    public String getToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
+
+    public static Transfer[] getTransfers(String token) {
+        Transfer[] transfers = null;
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 
-            HttpEntity<Void> entity = new HttpEntity<>(headers);
-
-            ResponseEntity<Transfer> response = restTemplate.exchange(API_BASE_URL, HttpMethod.GET, entity, Transfer.class);
-            transfers = (List<Transfer>) response;
+           ResponseEntity<Transfer[]> response = restTemplate.exchange(API_BASE_URL, HttpMethod.GET, makeAuthEntity(token), Transfer[].class);
+           transfers = response.getBody();
         }
         catch (RestClientResponseException | ResourceAccessException e) {
             BasicLogger.log(e.getMessage());
         }
         return transfers;
+    }
+
+    private static HttpEntity<Void> makeAuthEntity(String token) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        return new HttpEntity<>(headers);
     }
 }
