@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Transfer {
-    private int id;
+    private static int id;
     private int transferTypeId;
     private int transferStatusId;
     private int accountFrom;
@@ -23,7 +23,7 @@ public class Transfer {
         this.amount = amount;
     }
 
-    public int getId() {
+    public static int getId() {
         return id;
     }
     public int getTransferTypeId() {
