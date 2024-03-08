@@ -9,18 +9,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
-
 import java.math.BigDecimal;
 
 @Component
 public class JdbcAccountDao implements AccountDao {
-
     private final JdbcTemplate jdbcTemplate;
-
     public JdbcAccountDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-
     @Override
     public Account getAccountById(int accountId) {
         Account account = null;
@@ -35,7 +31,6 @@ public class JdbcAccountDao implements AccountDao {
         }
         return account;
     }
-
     @Override
     public BigDecimal getAccountBalance(int accountId) {
         BigDecimal balance;
@@ -64,8 +59,6 @@ public class JdbcAccountDao implements AccountDao {
         }
         return account;
     }
-
-
     @Override
     public Account setAccountBalance(Account account) {
         Account updatedAccount;
@@ -87,7 +80,6 @@ public class JdbcAccountDao implements AccountDao {
         }
         return updatedAccount;
     }
-
     private Account mapRowToAccount(SqlRowSet rs) {
         Account account = new Account();
         account.setAccountId(rs.getInt("account_id"));

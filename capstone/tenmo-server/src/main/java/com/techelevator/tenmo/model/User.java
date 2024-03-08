@@ -15,8 +15,6 @@ public class User {
    @JsonIgnore
    private boolean activated;
    private Set<Authority> authorities = new HashSet<>();
-   //private double balance;
-   private Account account;
 
    public User() { }
 
