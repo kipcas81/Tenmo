@@ -2,6 +2,7 @@ package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
 
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 
 public class App {
 
-    private static final String API_BASE_URL = "http://localhost:8080/";
+    public static final String API_BASE_URL = "http://localhost:8080/";
 
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
@@ -87,28 +88,36 @@ public class App {
     }
 
     private void viewCurrentBalance() {
-
-
+        if (currentUser != null) {
+            BigDecimal balance = authenticationService.getAccountBalance(currentUser);
+            if (balance != null) {
+                System.out.println("Your current account balance is: $" + balance);
+            } else {
+                System.out.println("Failed to retrieve account balance. Please try again later.");
+            }
+        } else {
+            System.out.println("You need to be logged in to view your account balance.");
+        }
     }
 
 	private void viewTransferHistory() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void viewPendingRequests() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void sendBucks() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void requestBucks() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

@@ -13,14 +13,20 @@ import org.springframework.web.client.RestTemplate;
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.UserCredentials;
 
+import java.math.BigDecimal;
+
+
+
 public class AuthenticationService {
 
+    private static final String BASE_URL = "http://localhost:8080/";
     private final String baseUrl;
-    private final RestTemplate restTemplate = new RestTemplate();
+    private static final RestTemplate restTemplate = new RestTemplate();
 
     public AuthenticationService(String url) {
         this.baseUrl = url;
     }
+
 
     public AuthenticatedUser login(UserCredentials credentials) {
         HttpEntity<UserCredentials> entity = createCredentialsEntity(credentials);
@@ -51,5 +57,23 @@ public class AuthenticationService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new HttpEntity<>(credentials, headers);
+    }
+
+    public static BigDecimal getAccountBalance(AuthenticatedUser auth) {
+        BigDecimal balance = BigDecimal.ZERO;
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setBearerAuth(auth.getToken());
+
+            HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+            ResponseEntity<BigDecimal> response = restTemplate.exchange(BASE_URL + "account/2001/balance",
+                    HttpMethod.GET, entity, BigDecimal.class);
+            balance = response.getBody();
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return balance;
     }
 }
