@@ -75,7 +75,7 @@ public class App {
             if (menuSelection == 1) {
                 viewCurrentBalance();
             } else if (menuSelection == 2) {
-                viewTransferHistory();
+                viewTransferHistory(currentUser.getToken());
             } else if (menuSelection == 3) {
                 viewPendingRequests();
             } else if (menuSelection == 4) {
@@ -104,12 +104,16 @@ public class App {
         }
     }
 
-	private void viewTransferHistory() {
-        List<Transfer> transfers = TransferService.getTransfers();
-        if(transfers == null) {
+	private void viewTransferHistory(String token) {
+        Transfer[] transfers = TransferService.getTransfers(token);
+        if (transfers == null) {
             System.out.println("You have no past transfers");
+        } else {
+            for (Transfer element : transfers) {
+                System.out.println(element);
+            }
         }
-	}
+    }
 
 	private void viewPendingRequests() {
 		// TODO Auto-generated method stub
